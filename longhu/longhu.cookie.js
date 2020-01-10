@@ -1,19 +1,25 @@
-const cookieName = 'longhu'
-const tokenKey = 'my_token_longhu'
+const appName = 'longhu'
+const dataKey = 'my_data_longhu'
 const tokenVal = $request.headers['token']
-const userKey = 'my_userkey_longhu'
-const userKeyVal = $request.headers['userKey']
+const userKeyVal = $request.headers['userkey']
+const xGaiaApiKeyVal = $request.headers['X-Gaia-Api-Key']
+const xLongforStoreIdVal = $request.headers['X-Longfor-StoreId']
 
 if (tokenVal && userKeyVal) {
-  let token = $persistentStore.write(tokenVal, tokenKey)
-  let userKey = $persistentStore.write(userKey, userKeyVal)
+  let dataJson = JSON.stringify({
+    'token' : tokenVal,
+    'userKey' : userKeyVal,
+    'xGaiaApiKey' : xGaiaApiKeyVal,
+    'xLongforStoreId' : xLongforStoreIdVal,
+  })
+  console.log(dataJson)
+  let data = $persistentStore.write(dataJson, dataKey)
 
-  if (token && userKey) {
-    let msg = `${cookieName}`
+  if (data) {
+    let msg = `${appName}`
     $notification.post(msg, 'token写入成功', '详见日志')
     console.log(msg)
-    console.log(tokenVal)
-    console.log(userKeyVal)
+    console.log(data)
   }
 }
 
